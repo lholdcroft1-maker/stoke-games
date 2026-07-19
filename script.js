@@ -171,7 +171,15 @@ const box=document.getElementById("fixtures");
 box.innerHTML="";
 
 
+const today = new Date();
+
 fixtures.forEach((game,index)=>{
+
+const fixtureDate = new Date(game[0]);
+
+if (fixtureDate < today) {
+    return;
+}
 
 
 const div=document.createElement("div");
