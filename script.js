@@ -13,7 +13,9 @@ import {
   setDoc,
   getDoc,
   collection,
-  getDocs
+  getDocs,
+  query,
+  where
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -247,23 +249,26 @@ showFixtures(user);
 
 async function loadAnswer(index,user){
 
-const ref=doc(
-db,
-"responses",
-user.uid + "_" + index
+const q = query(
+  collection(db,"responses"),
+  where("game","==",index)
 );
 
+const snapshot = await getDocs(q);
 
-const snap=await getDoc(ref);
+let answers = "";
 
+snapshot.forEach((doc)=>{
 
-if(snap.exists()){
+const data = doc.data();
+
+answers += data.name + ": " + data.answer + "\n";
+
+});
+
 
 document.getElementById(
 "answer"+index
-).innerText =
-"You selected: " + snap.data().answer;
-
-}
+).innerText = answers;
 
 }
